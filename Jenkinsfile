@@ -1,6 +1,10 @@
 pipeline {
     agent any
     
+    tools {
+        nodejs 'NodeJS-18'
+    }
+    
     stages {
         stage('Checkout') {
             steps {
@@ -28,8 +32,6 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Bắt đầu quá trình deploy...'
-                // Có thể thêm các bước deploy tùy theo môi trường
-                // Ví dụ: copy files, restart services, etc.
                 echo 'Deploy hoàn thành!'
             }
         }
