@@ -34,8 +34,7 @@ pipeline {
         }
         
         stage('Deploy') {
-            stages('Deploy to Firebase') {
-                    steps {
+            steps {
                         echo "===== DEPLOY TO FIREBASE ====="
                         // withCredentials([file(credentialsId: 'firebase_adc', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
                         //     sh '''
@@ -49,7 +48,6 @@ pipeline {
                             '''
                         }
                     }
-                }
         }
     }
     
