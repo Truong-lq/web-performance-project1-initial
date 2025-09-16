@@ -50,20 +50,20 @@ pipeline {
 
         stage('Deploy') {
             parallel {
-                // stage('Deploy to Firebase') {
-                //     steps {
-                //         echo "Bắt đầu deploy lên Firebase"
-                //         sh 'npx firebase --version'
+                stage('Deploy to Firebase') {
+                    steps {
+                        echo "Bắt đầu deploy lên Firebase"
+                        sh 'npx firebase --version'
 
-                //         withCredentials([string(credentialsId: 'LEGACY_TOKEN', variable: 'FIREBASE_TOKEN')]) {
-                //             sh '''
-                //                 export FIREBASE_TOKEN="$FIREBASE_TOKEN"
-                //                 npm run deploy:legacy -- --project=${PROJECT_NAME}
-                //             '''
-                //         }
-                //         echo 'Deploy lên Firebase hoàn thành!'
-                //     }
-                // }
+                        withCredentials([string(credentialsId: 'LEGACY_TOKEN', variable: 'FIREBASE_TOKEN')]) {
+                            sh '''
+                                export FIREBASE_TOKEN="$FIREBASE_TOKEN"
+                                npm run deploy:legacy -- --project=${PROJECT_NAME}
+                            '''
+                        }
+                        echo 'Deploy lên Firebase hoàn thành!'
+                    }
+                }
 
                 stage('Deploy to Remote Host') {
                     steps {
@@ -109,6 +109,7 @@ pipeline {
     post {
         always {
             echo 'Pipeline đã hoàn thành!'
+            cleanWs()
         }
         success {
             echo 'Pipeline chạy thành công!'
@@ -122,6 +123,12 @@ pipeline {
         }
         failure {
             echo 'Pipeline gặp lỗi!'
+            slackSend (
+                color: 'danger',
+                message: ":ninja:  *Thủ phạm*   ${GIT_AUTHOR}\n\n" +
+                        ":date:  *Thời gian*    ${FORMATTED_TIME}\n\n" +
+                        ":no_entry_sign:  Log chi tiết <${BUILD_URL}|ở đây>"
+            )
         }
     }
 }
