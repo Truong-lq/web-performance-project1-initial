@@ -8,7 +8,7 @@ pipeline {
     environment {
         PROJECT_NAME = "trule-jenkins-2025"
     }
-    
+
     stages {
         stage('Checkout') {
             steps {
@@ -16,7 +16,7 @@ pipeline {
                 echo 'Code đã được checkout thành công'
             }
         }
-        
+
         stage('Build') {
             steps {
                 echo 'Bắt đầu quá trình build...'
@@ -24,7 +24,7 @@ pipeline {
                 echo 'Build hoàn thành!'
             }
         }
-        
+
         stage('Lint & Test') {
             steps {
                 echo 'Bắt đầu quá trình lint và test...'
@@ -32,25 +32,23 @@ pipeline {
                 echo 'Lint và test hoàn thành!'
             }
         }
-        
+
         stage('Deploy') {
             steps {
-                        echo "===== DEPLOY TO FIREBASE ====="
-                        // withCredentials([file(credentialsId: 'firebase_adc', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
-                        //     sh '''
-                        //         export GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS
-                        //         firebase deploy --only hosting --project=${PROJECT_NAME}
-                        //     '''
-                        // }
-                        withCredentials([string(credentialsId: 'LEGACY_TOKEN', variable: 'FIREBASE_TOKEN')]) {
-                            sh '''
-                                firebase deploy --token "$FIREBASE_TOKEN" --only hosting --project=${PROJECT_NAME}
-                            '''
-                        }
-                    }
+                echo "===== DEPLOY TO FIREBASE ====="
+                sh 'npx firebase --version'
+                
+                withCredentials([string(credentialsId: 'LEGACY_TOKEN', variable: 'FIREBASE_TOKEN')]) {
+                    sh '''
+                        export FIREBASE_TOKEN="$FIREBASE_TOKEN"
+                        npm run deploy:legacy -- --project=${PROJECT_NAME}
+                    '''
+                }
+                echo 'Deploy hoàn thành!'
+            }
         }
     }
-    
+
     post {
         always {
             echo 'Pipeline đã hoàn thành!'
