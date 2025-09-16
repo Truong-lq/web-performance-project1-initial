@@ -127,7 +127,7 @@ pipeline {
                 color: 'danger',
                 message: ":ninja:  *Thủ phạm*   ${GIT_AUTHOR}\n\n" +
                         ":date:  *Thời gian*    ${FORMATTED_TIME}\n\n" +
-                        ":no_entry_sign:  Log chi tiết <${BUILD_URL}|ở đây>"
+                        ":no_entry_sign:  <${BUILD_URL}consoleFull|Log chi tiết>"
             )
         }
     }
