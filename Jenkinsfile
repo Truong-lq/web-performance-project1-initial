@@ -8,7 +8,8 @@ pipeline {
     environment {
         // Common
         GIT_AUTHOR = sh(script: 'git log -1 --pretty=format:"%an"', returnStdout: true).trim()
-        RELEASE_TIME = sh(script: 'TZ="Asia/Bangkok" date +"%H:%M %d-%m-%Y"', returnStdout: true).trim()
+        FORMATTED_TIME = sh(script: 'TZ="Asia/Bangkok" date +"%H:%M %d-%m-%Y"', returnStdout: true).trim()
+        RELEASE_DATE = sh(script: 'date +%Y%m%d', returnStdout: true).trim()
 
         // Firebase
         PROJECT_NAME = "trule-jenkins-2025"
@@ -115,7 +116,7 @@ pipeline {
             slackSend (
                 color: 'good',
                 message: ":ninja:  *Thủ phạm*   ${GIT_AUTHOR}\n\n" +
-                        ":date:  *Thời gian*    ${RELEASE_TIME}\n\n" +
+                        ":date:  *Thời gian*    ${FORMATTED_TIME}\n\n" +
                         ":confirmed:  <${FIREBASE_PRODUCT_URL}|Firebase>  |  <http://${REMOTE_HOST}/jenkins/${WORKSPACE_NAME}/deploy/current/|Remote Server>"
             )
         }
