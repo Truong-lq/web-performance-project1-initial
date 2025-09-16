@@ -8,7 +8,7 @@ pipeline {
     environment {
         PROJECT_NAME = "trule-jenkins-2025"
         GIT_AUTHOR = sh(script: 'git log -1 --pretty=format:"%an"', returnStdout: true).trim()
-        RELEASE_DATE = sh(script: 'date +%Y%m%d', returnStdout: true).trim()
+        RELEASE_DATE = sh(script: 'date +"%H:%M %d-%m-%Y"', returnStdout: true).trim()
     }
 
     stages {
@@ -60,10 +60,9 @@ pipeline {
 
             slackSend (
                 color: 'good',
-                message: ":cooldoge: *COOL! Deploy được luôn nè!*\n" +
-                        ":ninja: *Thủ phạm* ${GIT_AUTHOR}\n" +
-                        ":date: *Thời gian* ${RELEASE_DATE}\n" +
-                        ":confirmed: *Kết quả* <Firebase|https://trule-jenkins-2025.firebaseapp.com> "
+                message: ":ninja:  *Thủ phạm*   ${GIT_AUTHOR}\n\n" +
+                        ":date:  *Thời gian*    ${RELEASE_DATE}\n\n" +
+                        ":confirmed:  <https://trule-jenkins-2025.firebaseapp.com|Firebase>  "
             )
         }
         failure {
