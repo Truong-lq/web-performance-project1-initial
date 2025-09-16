@@ -74,7 +74,7 @@ pipeline {
 
                             withCredentials([file(credentialsId: 'SSH_KEY_FILE', variable: 'SSH_KEY')]) {
                                 sh """
-                                    ssh -o StrictHostKeyChecking=no -i "$SSH_KEY" -p \$REMOTE_PORT \$REMOTE_USER@\$REMOTE_HOST "echo Connected!"
+                                    ssh -o StrictHostKeyChecking=no -i $SSH_KEY -p \$REMOTE_PORT \$REMOTE_USER@\$REMOTE_HOST '
                                         if [ ! -d "${REMOTE_PATH}/${WORKSPACE_NAME}" ]; then
                                             cp -r ${REMOTE_PATH}/template2 ${REMOTE_PATH}/${WORKSPACE_NAME}
                                         fi
