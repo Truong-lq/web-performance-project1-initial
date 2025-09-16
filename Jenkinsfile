@@ -8,7 +8,7 @@ pipeline {
     environment {
         PROJECT_NAME = "trule-jenkins-2025"
         GIT_AUTHOR = sh(script: 'git log -1 --pretty=format:"%an"', returnStdout: true).trim()
-        RELEASE_DATE = sh(script: 'date +"%H:%M %d-%m-%Y"', returnStdout: true).trim()
+        RELEASE_TIME = sh(script: 'TZ="Asia/Bangkok" date +"%H:%M %d-%m-%Y"', returnStdout: true).trim()
     }
 
     stages {
@@ -61,7 +61,7 @@ pipeline {
             slackSend (
                 color: 'good',
                 message: ":ninja:  *Thủ phạm*   ${GIT_AUTHOR}\n\n" +
-                        ":date:  *Thời gian*    ${RELEASE_DATE}\n\n" +
+                        ":date:  *Thời gian*    ${RELEASE_TIME}\n\n" +
                         ":confirmed:  <https://trule-jenkins-2025.firebaseapp.com|Firebase>  "
             )
         }
