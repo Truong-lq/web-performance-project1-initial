@@ -72,7 +72,7 @@ pipeline {
                             def releaseDir = "${REMOTE_PATH}/${WORKSPACE_NAME}/deploy/${RELEASE_DATE}"
                             def mainDir = "${REMOTE_PATH}/${WORKSPACE_NAME}/${MAIN_FOLDER}"
 
-                            withCredentials([file(credentialsId: 'SSH_KEY', variable: 'SSH_KEY')]) {
+                            withCredentials([file(credentialsId: 'SSH_KEY_FILE', variable: 'SSH_KEY')]) {
                                 sh """
                                     ssh -o StrictHostKeyChecking=no -i \$SSH_KEY -p \${REMOTE_PORT} \${REMOTE_USER}@\${REMOTE_HOST} '
                                         if [ ! -d "${REMOTE_PATH}/${WORKSPACE_NAME}" ]; then
