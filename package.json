@@ -36,5 +36,8 @@
     "testEnvironmentOptions": {
       "url": "http://localhost"
     }
+  },
+  "dependencies": {
+    "firebase-tools": "^14.16.0"
   }
 }
