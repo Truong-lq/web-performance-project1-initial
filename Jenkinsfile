@@ -75,11 +75,12 @@ pipeline {
                             withCredentials([file(credentialsId: 'SSH_KEY_FILE', variable: 'SSH_KEY')]) {
                                 sh """
                                     chmod 600 "$SSH_KEY"
-                                    ssh -o StrictHostKeyChecking=no -i "$SSH_KEY" -p \$REMOTE_PORT \$REMOTE_USER@\$REMOTE_HOST '
-                                        if [ ! -d "${REMOTE_PATH}/${WORKSPACE_NAME}" ]; then
-                                            cp -r ${REMOTE_PATH}/template2 ${REMOTE_PATH}/${WORKSPACE_NAME}
+
+                                    ssh -o StrictHostKeyChecking=no -i "$SSH_KEY" -p "$REMOTE_PORT" "$REMOTE_USER@$REMOTE_HOST" "
+                                        if [ ! -d \"$REMOTE_PATH/$WORKSPACE_NAME\" ]; then
+                                            cp -r \"$REMOTE_PATH/template2\" \"$REMOTE_PATH/$WORKSPACE_NAME\"
                                         fi
-                                    '
+                                    "
                                     ssh -o StrictHostKeyChecking=no -i \$SSH_KEY -p \${REMOTE_PORT} \${REMOTE_USER}@\${REMOTE_HOST} "mkdir -p ${releaseDir}"
                                     scp -o StrictHostKeyChecking=no -i \$SSH_KEY -P \${REMOTE_PORT} index.html \${REMOTE_USER}@\${REMOTE_HOST}:${mainDir}/
                                     scp -o StrictHostKeyChecking=no -i \$SSH_KEY -P \${REMOTE_PORT} 404.html \${REMOTE_USER}@\${REMOTE_HOST}:${mainDir}/
