@@ -4,6 +4,10 @@ pipeline {
     tools {
         nodejs "Node24"
     }
+
+    environment {
+        PROJECT_NAME = "trule-jenkins-2025"
+    }
     
     stages {
         stage('Checkout') {
@@ -30,10 +34,22 @@ pipeline {
         }
         
         stage('Deploy') {
-            steps {
-                echo 'Bắt đầu quá trình deploy...'
-                echo 'Deploy hoàn thành!'
-            }
+            stage('Deploy to Firebase') {
+                    steps {
+                        echo "===== DEPLOY TO FIREBASE ====="
+                        // withCredentials([file(credentialsId: 'firebase_adc', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
+                        //     sh '''
+                        //         export GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS
+                        //         firebase deploy --only hosting --project=${PROJECT_NAME}
+                        //     '''
+                        // }
+                        withCredentials([string(credentialsId: 'LEGACY_TOKEN', variable: 'FIREBASE_TOKEN')]) {
+                            sh '''
+                                firebase deploy --token "$FIREBASE_TOKEN" --only hosting --project=${PROJECT_NAME}
+                            '''
+                        }
+                    }
+                }
         }
     }
     
