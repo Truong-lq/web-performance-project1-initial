@@ -57,14 +57,13 @@ pipeline {
             echo 'Pipeline chạy thành công!'
 
             slackSend (
-                channel: '#lnd-2025-workshop',
                 color: 'good',
                 message: ":white_check_mark: *SUCCESS*\n" +
                         // ":small_blue_diamond: *User:* ${GIT_AUTHOR}\n" +
                         // ":small_blue_diamond: *Job:* ${env.JOB_NAME}\n" +
                         // ":small_blue_diamond: *Build:* #${env.BUILD_NUMBER}\n" +
                         // ":small_blue_diamond: *Release:* ${RELEASE_DATE}\n" +
-                        ":small_blue_diamond: *Firebase:* https://trule-jenkins-2025.firebaseapp.com\n" +
+                        ":small_blue_diamond: *Firebase:* https://trule-jenkins-2025.firebaseapp.com\n"
                         // ":small_blue_diamond: *Remote:* http://${REMOTE_HOST}/jenkins/${WORKSPACE_NAME}/deploy/current/"
             )
         }
