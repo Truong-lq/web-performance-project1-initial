@@ -72,25 +72,25 @@ pipeline {
                             def releaseDir = "${REMOTE_PATH}/${WORKSPACE_NAME}/deploy/${RELEASE_DATE}"
                             def mainDir = "${REMOTE_PATH}/${WORKSPACE_NAME}/${MAIN_FOLDER}"
 
-                            withCredentials([file(credentialsId: 'REMOTE_SERVER_SSH_KEY', variable: 'SSH_KEY')]) {
+                            sshagent(credentials: ['REMOTE_SERVER_SSH_KEY']) {
                                 sh """
-                                    ssh -o StrictHostKeyChecking=no -i \$SSH_KEY -p \${REMOTE_PORT} \${REMOTE_USER}@\${REMOTE_HOST} '
+                                    ssh -o StrictHostKeyChecking=no -p \${REMOTE_PORT} \${REMOTE_USER}@\${REMOTE_HOST} '
                                         if [ ! -d "${REMOTE_PATH}/${WORKSPACE_NAME}" ]; then
                                             cp -r ${REMOTE_PATH}/template2 ${REMOTE_PATH}/${WORKSPACE_NAME}
                                         fi
                                     '
-                                    ssh -o StrictHostKeyChecking=no -i \$SSH_KEY -p \${REMOTE_PORT} \${REMOTE_USER}@\${REMOTE_HOST} "mkdir -p ${releaseDir}"
-                                    scp -o StrictHostKeyChecking=no -i \$SSH_KEY -P \${REMOTE_PORT} index.html \${REMOTE_USER}@\${REMOTE_HOST}:${mainDir}/
-                                    scp -o StrictHostKeyChecking=no -i \$SSH_KEY -P \${REMOTE_PORT} 404.html \${REMOTE_USER}@\${REMOTE_HOST}:${mainDir}/
-                                    scp -o StrictHostKeyChecking=no -i \$SSH_KEY -P \${REMOTE_PORT} -r css \${REMOTE_USER}@\${REMOTE_HOST}:${mainDir}/
-                                    scp -o StrictHostKeyChecking=no -i \$SSH_KEY -P \${REMOTE_PORT} -r js \${REMOTE_USER}@\${REMOTE_HOST}:${mainDir}/
-                                    scp -o StrictHostKeyChecking=no -i \$SSH_KEY -P \${REMOTE_PORT} -r images \${REMOTE_USER}@\${REMOTE_HOST}:${mainDir}/
-                                    ssh -o StrictHostKeyChecking=no -i \$SSH_KEY -p \${REMOTE_PORT} \${REMOTE_USER}@\${REMOTE_HOST} "cp -r ${mainDir}/index.html ${releaseDir}/"
-                                    ssh -o StrictHostKeyChecking=no -i \$SSH_KEY -p \${REMOTE_PORT} \${REMOTE_USER}@\${REMOTE_HOST} "cp -r ${mainDir}/404.html ${releaseDir}/"
-                                    ssh -o StrictHostKeyChecking=no -i \$SSH_KEY -p \${REMOTE_PORT} \${REMOTE_USER}@\${REMOTE_HOST} "cp -r ${mainDir}/css ${releaseDir}/"
-                                    ssh -o StrictHostKeyChecking=no -i \$SSH_KEY -p \${REMOTE_PORT} \${REMOTE_USER}@\${REMOTE_HOST} "cp -r ${mainDir}/js ${releaseDir}/"
-                                    ssh -o StrictHostKeyChecking=no -i \$SSH_KEY -p \${REMOTE_PORT} \${REMOTE_USER}@\${REMOTE_HOST} "cp -r ${mainDir}/images ${releaseDir}/"
-                                    ssh -o StrictHostKeyChecking=no -i \$SSH_KEY -p \${REMOTE_PORT} \${REMOTE_USER}@\${REMOTE_HOST} "
+                                    ssh -o StrictHostKeyChecking=no -p \${REMOTE_PORT} \${REMOTE_USER}@\${REMOTE_HOST} "mkdir -p ${releaseDir}"
+                                    scp -o StrictHostKeyChecking=no -P \${REMOTE_PORT} index.html \${REMOTE_USER}@\${REMOTE_HOST}:${mainDir}/
+                                    scp -o StrictHostKeyChecking=no -P \${REMOTE_PORT} 404.html \${REMOTE_USER}@\${REMOTE_HOST}:${mainDir}/
+                                    scp -o StrictHostKeyChecking=no -P \${REMOTE_PORT} -r css \${REMOTE_USER}@\${REMOTE_HOST}:${mainDir}/
+                                    scp -o StrictHostKeyChecking=no -P \${REMOTE_PORT} -r js \${REMOTE_USER}@\${REMOTE_HOST}:${mainDir}/
+                                    scp -o StrictHostKeyChecking=no -P \${REMOTE_PORT} -r images \${REMOTE_USER}@\${REMOTE_HOST}:${mainDir}/
+                                    ssh -o StrictHostKeyChecking=no -p \${REMOTE_PORT} \${REMOTE_USER}@\${REMOTE_HOST} "cp -r ${mainDir}/index.html ${releaseDir}/"
+                                    ssh -o StrictHostKeyChecking=no -p \${REMOTE_PORT} \${REMOTE_USER}@\${REMOTE_HOST} "cp -r ${mainDir}/404.html ${releaseDir}/"
+                                    ssh -o StrictHostKeyChecking=no -p \${REMOTE_PORT} \${REMOTE_USER}@\${REMOTE_HOST} "cp -r ${mainDir}/css ${releaseDir}/"
+                                    ssh -o StrictHostKeyChecking=no -p \${REMOTE_PORT} \${REMOTE_USER}@\${REMOTE_HOST} "cp -r ${mainDir}/js ${releaseDir}/"
+                                    ssh -o StrictHostKeyChecking=no -p \${REMOTE_PORT} \${REMOTE_USER}@\${REMOTE_HOST} "cp -r ${mainDir}/images ${releaseDir}/"
+                                    ssh -o StrictHostKeyChecking=no -p \${REMOTE_PORT} \${REMOTE_USER}@\${REMOTE_HOST} "
                                         cd \${REMOTE_PATH}/\${WORKSPACE_NAME}/deploy
                                         rm -f current
                                         ln -s "\${RELEASE_DATE}" current
